@@ -1,0 +1,55 @@
+body {
+    font-family: 'Montserrat', sans-serif;
+    text-align: center;
+    
+}
+
+#bigText {
+    color: #33ccff;
+    text-shadow: #33ccff 0 0 0.3em;
+    font-size: 60px;
+}
+
+#submit {
+  border: 2px solid #33ccff;
+  color: #33ccff;
+  background-color: white;
+  font-family: 'Montserrat', sans-serif;
+  padding: 8px 20px;
+  border-radius: 8px;
+  font-weight: bold;
+  margin-right: auto;
+  margin-left: auto;
+} #submit:hover {
+    cursor: pointer;
+}
+
+.blueButton {
+  border: 2px solid #33ccff;
+  color: #33ccff;
+  background-color: white;
+  font-family: 'Montserrat', sans-serif;
+  padding: 8px 20px;
+  border-radius: 8px;
+  font-weight: bold;
+  margin-right: auto;
+  margin-left: auto;  
+}
+
+#output {
+    background-color:#ffffff;
+    width:200px;
+    margin-right:auto;
+    margin-left:auto;
+    color:#aaaaaa;
+    font-size:20px;
+}
+
+p {
+    width: 400px;
+    margin-right: auto;
+    margin-left: auto;
+    text-align: left;
+    color: #aaaaaa;
+}
+    
