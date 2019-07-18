@@ -7,19 +7,21 @@
         <!--link Google Font being used-->
         <link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet">
     </head>
-    
     <script type="text/javascript">
+      // GLOBAL VARIABLES
+      // TODO: Replace the auth variables with your own.
+        
       // The Browser API key obtained from the Google API Console.
-      var developerKey = 'AIzaSyCViLscNNeIt7c6EkNdV2uHA_2KGs6HzCA';
+      var developerKey = 'YOUR_DEVELOPER_KEY';
 
       // The Client ID obtained from the Google API Console. Replace with your own Client ID.
-      var clientId = '838291707056-ntc1f0k4apn5qsho55k6rvcfmp019bcv.apps.googleusercontent.com';
+      var clientId = 'YOUR_CLIENT_ID';
 
       // Scope to use to access user's drive.
       var scope = 'https://www.googleapis.com/auth/drive';
       
       // Project ID number
-      var appId = "838291707056";
+      var appId = 'YOUR_ID';
 
       var pickerApiLoaded = false;
       var oauthToken;
@@ -42,11 +44,17 @@
         });
       }
 
+      /**
+       *  On Picker load, creates Picker.
+       */
       function onPickerApiLoad() {
         pickerApiLoaded = true;
         createPicker();
       }
 
+      /**
+       *  Ensures auth is correct to create Picker.
+       */
       function handleAuthResult(authResult) {
         if (authResult && !authResult.error) {
           oauthToken = authResult.access_token;
@@ -54,7 +62,10 @@
         }
       }
 
-      // Create and render a Picker object for picking user photos.
+      /**
+       *  Creates and renders a Picker object for picking
+       *  Google Drive photos.
+       */
       function createPicker() {
       if (pickerApiLoaded && oauthToken) {
         var view = new google.picker.DocsView();
@@ -72,9 +83,13 @@
          picker.setVisible(true);
       }
     }
+        
       // initialize fileId  
-      var fileId = 'nothing';
-      // A simple callback implementation.
+      var fileId = '';
+
+      /**
+       *  Handles Picker response & displays its file ID.
+       */
       function pickerCallback(data) {
         if (data[google.picker.Response.ACTION] == google.picker.Action.PICKED) {
           fileId = data[google.picker.Response.DOCUMENTS][0].id;          
@@ -82,23 +97,29 @@
           document.getElementById('result').innerHTML = message;
           var authBtn = document.getElementById('auth');
           authBtn.disabled = true;
-          
         }  
       }
           
-       // Makes the 'GET' request.
+       /**
+       *  Makes a 'GET' fetch request to a Google Cloud Function, which
+       *  sends the picked image through the Google Vision labelDetection
+       *  API.
+       */
        function myFunction() {
             var URL_BASE = "https://us-central1-myphproject.cloudfunctions.net/analyzeImage";
             var functionEndpoint = URL_BASE + "?fileId=" + fileId;
+           
+               // Makes fetch request.
                fetch(functionEndpoint).then(res => res.json()) 
                   .then(function(data) {
+                      // Handles server response.
                       console.table("data is: " + data);
-                      document.getElementById("output").innerHTML = "Here's what is in your image...<br>" + JSON.stringify(data, null, 2);
+                      document.getElementById("output").innerHTML = "Here's what is in your image...<br>" + 
+                          JSON.stringify(data, null, 2);
                   }).catch(function(error) {
                       console.log("Err is:" + err);
                   });
-        } //closes myFunction
-
+        } 
     </script> 
     <body>
         <br><br>
@@ -109,7 +130,9 @@
          <!-- The Google API Loader script. -->
          <script type="text/javascript" src="https://apis.google.com/js/api.js?onload=onApiLoad"></script>
         
-        <p> Step 1: Authenticate. Make sure that the image file you are picking from your Google Drive         is a publically viewable.</p>
+        <p> Step 1: Authenticate. Make sure that the image file you are picking from your Google Drive is 
+            publically viewable.
+        </p>
         <button type="button" id="auth" class="blueButton" disabled>authenticate</button>
         <br><br>
         <div id="result"><!--result of fileId is printed here--></div>
@@ -117,6 +140,5 @@
         <p> Step 2: Send your image through to the Google Vision API.</p>
         <button type="button" id="submit" onclick="myFunction()">submit</button>
         <pre id="output"><!--image labels are printed here--></pre>
-
     </body>
 </html>
